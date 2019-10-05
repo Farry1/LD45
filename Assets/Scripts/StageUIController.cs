@@ -2,14 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class StageUIController : MonoBehaviour
 {
-    [Header("PlayerActions")]
 
+    [Header("UI Prefabs")]
     public GameObject actionButtonPrefab;
+    public GameObject unitPanelPrefab;
+
+
+    [Header("UI Container")]
     public GameObject playerActionsContainer;
+    public GameObject playerInfoContainer;
+
+    [Header("UI Buttons")]
     public Button playerMoveButton;
+
+
+
+
 
     private static StageUIController _instance;
     public static StageUIController Instance { get { return _instance; } }
@@ -30,6 +42,7 @@ public class StageUIController : MonoBehaviour
     void Start()
     {
         playerMoveButton.interactable = true;
+
     }
 
     // Update is called once per frame
@@ -43,6 +56,19 @@ public class StageUIController : MonoBehaviour
         playerActionsContainer.SetActive(state);
     }
 
+    public void CreateUnitPanel()
+    {
+        Debug.Log("Creating Player Info Panel");
+        foreach (Unit unit in PlayerUnitController.Instance.units)
+        {
+            GameObject unitPanel = GameObject.Instantiate(unitPanelPrefab, playerInfoContainer.transform);
+            unit.relatedUIPanel = unitPanel;
+
+            //actionButton.GetComponentInChildren<Text>().text = action.actionName;
+            //actionButton.GetComponentInChildren<Button>().onClick.AddListener(action.Execute);
+        }
+    }
+
     public void ClearPlayerActions()
     {
         Button[] buttons = playerActionsContainer.GetComponentsInChildren<Button>();
@@ -54,10 +80,11 @@ public class StageUIController : MonoBehaviour
 
     public void CreateActionMenu(List<Action> availableActions)
     {
+        Debug.Log("Creating Actions Menu");
         foreach (Action action in availableActions)
         {
             GameObject actionButton = GameObject.Instantiate(actionButtonPrefab, playerActionsContainer.transform);
-            actionButton.GetComponentInChildren<Text>().text = action.name;
+            actionButton.GetComponentInChildren<Text>().text = action.actionName;
             actionButton.GetComponentInChildren<Button>().onClick.AddListener(action.Execute);
         }
     }

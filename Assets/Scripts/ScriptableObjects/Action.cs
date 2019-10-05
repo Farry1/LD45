@@ -5,7 +5,10 @@ using UnityEngine;
 public class Action : ScriptableObject
 {
     public string actionName = "Action";
+    public string observerKey = "Action";
     public int actionPointsNeeded = 1;
+
+    public bool actionIsRunning = false;
 
     public virtual void Execute()
     {

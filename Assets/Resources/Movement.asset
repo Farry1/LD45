@@ -10,7 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ae2fab50ce4e76c49858a722bb7de7f3, type: 3}
-  m_Name: PlayerMoveAction
+  m_Name: Movement
   m_EditorClassIdentifier: 
   actionName: Move
+  observerKey: Move
   actionPointsNeeded: 1
+  actionIsRunning: 0

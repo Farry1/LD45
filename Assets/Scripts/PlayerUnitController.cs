@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerUnitController : MonoBehaviour
 {
-    List<Unit> units = new List<Unit>();
+    public List<Unit> units = new List<Unit>();
     public Unit selectedPlayerUnit = null;
 
     private static PlayerUnitController _instance;
@@ -31,25 +31,28 @@ public class PlayerUnitController : MonoBehaviour
         {
             units.Add(u);
         }
+
+        StageUIController.Instance.CreateUnitPanel();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (selectedPlayerUnit != null)
+        if (selectedPlayerUnit != null && 
+            selectedPlayerUnit.currentPath != null &&
+            selectedPlayerUnit.actionState != Unit.ActionState.Moving)
         {
-            if (selectedPlayerUnit.currentPath != null)
-            {
-                int currentNode = 0;
 
-                while (currentNode < selectedPlayerUnit.currentPath.Count - 1)
-                {
-                    Vector3 start = selectedPlayerUnit.currentPath[currentNode].transform.position;
-                    Vector3 end = selectedPlayerUnit.currentPath[currentNode + 1].transform.position;
-                    Debug.DrawLine(start, end, Color.cyan);
-                    currentNode++;
-                }
+            int currentNode = 0;
+
+            while (currentNode < selectedPlayerUnit.currentPath.Count - 1)
+            {
+                Vector3 start = selectedPlayerUnit.currentPath[currentNode].transform.position;
+                Vector3 end = selectedPlayerUnit.currentPath[currentNode + 1].transform.position;
+                Debug.DrawLine(start, end, Color.cyan);
+                currentNode++;
             }
+
         }
     }
 
@@ -91,5 +94,5 @@ public class PlayerUnitController : MonoBehaviour
             selectedPlayerUnit.moveActionAvailable = true;
             StageUIController.Instance.playerMoveButton.interactable = false;
         }
-    }    
+    }
 }

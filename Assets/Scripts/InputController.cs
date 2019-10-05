@@ -38,7 +38,7 @@ public class InputController : MonoBehaviour
                     Node hitNode = objectSideHit.collider.gameObject.GetComponent<Node>();
                     if (hitNode != null && selectedPlayerUnit != null)
                     {
-                        selectedPlayerUnit.GeneratePathTo(hitNode);
+                        selectedPlayerUnit.PrecalculatePathTo(hitNode);
                     }
                 }
             }
@@ -77,8 +77,14 @@ public class InputController : MonoBehaviour
 
         if (Input.GetMouseButtonUp(1))
         {
-            PlayerUnitController.Instance.UnselectSelectedUnits();
+            // PlayerUnitController.Instance.UnselectSelectedUnits();
         }
+    }
+
+    public void OnSelect(ISelectable selectable)
+    {
+        if (selectable != null)
+            selectable.OnSelect();
     }
 
     public void OnSelectMoveAction()

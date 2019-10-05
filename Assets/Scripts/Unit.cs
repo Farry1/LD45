@@ -2,29 +2,34 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Unit : MonoBehaviour, ISelectable
 {
     public enum UnitState { Idle, Selected, Dead };
     public UnitState unitState = UnitState.Idle;
 
-    public List<Action> availableActions = new List<Action>();
-    public int actionPoints = 2;
+    public enum ActionState { MoveSelection, None, Moving }
+    public ActionState actionState;
 
+    public int actionPoints = 2;
     public int maxSteps = 1;
+
     public Node currentNode = null;
     public List<Node> currentPath = null;
     public bool moveActionAvailable = false;
-
 
     float t;
     Vector3 startPosition;
     Vector3 target;
     float timeToReachTarget;
 
+    public List<Action> actions = new List<Action>();
+
+    public GameObject relatedUIPanel;
+
     private void Start()
     {
-
         startPosition = target = transform.position;
 
         if (currentNode == null)
@@ -58,7 +63,42 @@ public class Unit : MonoBehaviour, ISelectable
     private void Update()
     {
         t += Time.deltaTime / timeToReachTarget;
-        // transform.position = Vector3.Lerp(startPosition, target, t);
+
+        bool rightMouseUp = Input.GetMouseButtonUp(1);
+
+
+        switch (unitState)
+        {
+            case UnitState.Idle:
+                break;
+
+            case UnitState.Selected:
+
+                switch (actionState)
+                {
+                    case ActionState.None:
+                        if (rightMouseUp)
+                            PlayerUnitController.Instance.UnselectSelectedUnits();
+                        break;
+
+
+                    case ActionState.MoveSelection:
+                        if (rightMouseUp)
+                        {
+                            actionState = ActionState.None;
+                            currentPath = null;
+                        }
+
+                        break;
+                }
+
+                break;
+
+            case UnitState.Dead:
+                break;
+        }
+
+        transform.position = Vector3.Lerp(startPosition, target, t);
     }
 
     IEnumerator MoveNextTile()
@@ -66,9 +106,9 @@ public class Unit : MonoBehaviour, ISelectable
         //Remove the old first node and move us to that position
         currentPath.RemoveAt(0);
 
-        //SetMoveDestination(currentPath[0].transform.position, 0.25f);
+        SetMoveDestination(currentPath[0].transform.position, 0.45f);
 
-        transform.position = currentPath[0].transform.position;
+        //transform.position = currentPath[0].transform.position;
         transform.rotation = currentPath[0].transform.rotation;
 
         currentNode = currentPath[0];
@@ -77,21 +117,25 @@ public class Unit : MonoBehaviour, ISelectable
         {
             //Next thingy in path would be our ultimate goal and we're standing on it. So make the path null to end this
             currentPath = null;
+            actionState = ActionState.None;
             StageUIController.Instance.playerMoveButton.interactable = true;
-            //if (unitState == UnitState.Selected)
-            //    TileMap.Instance.Dijkstra(currentNode, maxSteps);
+            if (unitState == UnitState.Selected)
+                TileMap.Instance.Dijkstra(currentNode, maxSteps);
         }
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
     }
+
 
     public void Move()
     {
         TileMap.Instance.Clear();
-        if (moveActionAvailable && currentPath != null)
+        if (actionState != ActionState.Moving && currentPath != null)
         {
-            moveActionAvailable = false;
+            actionState = ActionState.Moving;
             StartCoroutine(MoveCoroutine());
+            actionPoints--;
+            relatedUIPanel.transform.Find("TurnsText").GetComponent<Text>().text = actionPoints.ToString();
         }
     }
 
@@ -103,12 +147,13 @@ public class Unit : MonoBehaviour, ISelectable
         }
     }
 
-    public void GeneratePathTo(Node target)
+    public void PrecalculatePathTo(Node target)
     {
-        if (moveActionAvailable == true)
+        if (unitState == UnitState.Selected && actionState == ActionState.MoveSelection)
+        {
             currentPath = TileMap.Instance.GeneratePathTo(currentNode, target, maxSteps);
+        }
     }
-
 
     public void OnSelect()
     {
@@ -117,7 +162,7 @@ public class Unit : MonoBehaviour, ISelectable
             PlayerUnitController.Instance.SelectUnit(this);
             unitState = UnitState.Selected;
 
-            StageUIController.Instance.CreateActionMenu(availableActions);
+            StageUIController.Instance.CreateActionMenu(actions);
             // StageUIController.Instance.playerMoveButton.interactable = !moveActionAvailable;
 
             TileMap.Instance.Dijkstra(currentNode, maxSteps);
@@ -132,3 +177,4 @@ public class Unit : MonoBehaviour, ISelectable
         target = destination;
     }
 }
+
