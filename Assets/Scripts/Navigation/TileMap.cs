@@ -35,14 +35,7 @@ public class TileMap : MonoBehaviour
     {
 
     }
-
-    void DrawPath()
-    {
-        //if (currentPath != null)
-        //{
-        //    StartCoroutine(DrawPathCoroutine());
-        //}
-    }
+   
 
     void ChangeSelectedUnit()
     {
@@ -68,7 +61,7 @@ public class TileMap : MonoBehaviour
 
     public List<Node> GeneratePathTo(Node source, Node target, int maxSteps)
     {
-        PlayerUnitController.Instance.selectedPlayerUnit.currentPath = null;
+        PlayerUnitsController.Instance.selectedPlayerUnit.currentPath = null;
 
         Dictionary<Node, float> distance = new Dictionary<Node, float>();
         Dictionary<Node, Node> previous = new Dictionary<Node, Node>();
@@ -154,7 +147,7 @@ public class TileMap : MonoBehaviour
 
     public void Dijkstra(Node source, int maxSteps)
     {
-        source = PlayerUnitController.Instance.selectedPlayerUnit.currentNode;
+        source = PlayerUnitsController.Instance.selectedPlayerUnit.currentNode;
 
         Dictionary<Node, float> distance = new Dictionary<Node, float>();
         Dictionary<Node, Node> previous = new Dictionary<Node, Node>();
@@ -206,6 +199,8 @@ public class TileMap : MonoBehaviour
             }
         }
     }
+
+    
 
     public void Clear()
     {

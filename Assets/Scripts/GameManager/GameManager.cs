@@ -18,8 +18,6 @@ public class GameManager : MonoBehaviour
         {
             _instance = this;
         }
-
-        DontDestroyOnLoad(this);
     }
 
 
@@ -28,11 +26,7 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 
-    public void ReloadCurrentScene()
-    {
-        Scene scene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(scene.name);
-    }
+  
 
     public void QuitGame()
     {

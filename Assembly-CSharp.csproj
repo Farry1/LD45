@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\CameraMovement.cs" />
+    <Compile Include="Assets\Scripts\FaceCamera.cs" />
     <Compile Include="Assets\Scripts\GameManager\GameManager.cs" />
     <Compile Include="Assets\Scripts\GameManager\StageManager.cs" />
     <Compile Include="Assets\Scripts\GameManager\StageUIController.cs" />
@@ -71,12 +72,19 @@
     <Compile Include="Assets\Scripts\Navigation\Node.cs" />
     <Compile Include="Assets\Scripts\Navigation\NodeGenerator.cs" />
     <Compile Include="Assets\Scripts\Navigation\TileMap.cs" />
-    <Compile Include="Assets\Scripts\PlayerUnitController.cs" />
+    <Compile Include="Assets\Scripts\Projectile.cs" />
     <Compile Include="Assets\Scripts\ScriptableObjects\Action.cs" />
     <Compile Include="Assets\Scripts\ScriptableObjects\PlayerMoveAction.cs" />
+    <Compile Include="Assets\Scripts\ScriptableObjects\PlayerShootAction.cs" />
     <Compile Include="Assets\Scripts\ScriptableObjects\TestAction.cs" />
-    <Compile Include="Assets\Scripts\Unit.cs" />
-    <Compile Include="Assets\Scripts\UnitFacing.cs" />
+    <Compile Include="Assets\Scripts\ScriptableObjects\Weapon.cs" />
+    <Compile Include="Assets\Scripts\Units\EnemyUnit.cs" />
+    <Compile Include="Assets\Scripts\Units\EnemyUnitsController.cs" />
+    <Compile Include="Assets\Scripts\Units\Health.cs" />
+    <Compile Include="Assets\Scripts\Units\PlayerUnit.cs" />
+    <Compile Include="Assets\Scripts\Units\PlayerUnitsController.cs" />
+    <Compile Include="Assets\Scripts\Units\Unit.cs" />
+    <Compile Include="Assets\Scripts\Units\UnitFacing.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>D:/Projekte/Unity/Ludum Dare 45 - Start With Nothing/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>

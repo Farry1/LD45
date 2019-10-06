@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: TestAction
   m_EditorClassIdentifier: 
   actionName: TestAction
+  observerKey: Action
   actionPointsNeeded: 1
+  actionIsRunning: 0

@@ -5,17 +5,17 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "MoveAction", menuName = "Actions/Movement")]
 public class PlayerMoveAction : Action
 {
-    Unit unit
+    PlayerUnit unit
     {
         get
         {
-            return PlayerUnitController.Instance.selectedPlayerUnit;
+            return PlayerUnitsController.Instance.selectedPlayerUnit;
         }
     }
 
 
     public override void Execute()
     {
-        unit.actionState = Unit.ActionState.MoveSelection;        
+        unit.SwitchActionState(PlayerUnit.PlayerActionState.MoveSelection);
     }
 }

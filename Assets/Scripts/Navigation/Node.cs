@@ -10,7 +10,10 @@ public class Node : MonoBehaviour
     public float movementCost = 1;
     public bool canBeEntered = true;
     public TextMesh stepCounterText;
-    public Renderer walkableIndicatorSurface;
+    public Renderer surfaceIndicator;
+    public Renderer visibleSurfaceIndicator;
+
+    public Material[] materials;
 
 
     private void Start()
@@ -24,18 +27,33 @@ public class Node : MonoBehaviour
 
         if (stepsRequired <= maxSteps)
         {
-            walkableIndicatorSurface.gameObject.SetActive(true);
-            walkableIndicatorSurface.material.color = Color.green;
+            surfaceIndicator.gameObject.SetActive(true);            
+            surfaceIndicator.material.color = Color.green;
+
+            visibleSurfaceIndicator.gameObject.SetActive(true);
+            visibleSurfaceIndicator.material = materials[0];
         }
         else
         {
-            walkableIndicatorSurface.gameObject.SetActive(false);
+            surfaceIndicator.gameObject.SetActive(false);
+            visibleSurfaceIndicator.gameObject.SetActive(false);
         }
+    }
+
+    public void HighlightField(Color color)
+    {
+        surfaceIndicator.gameObject.SetActive(true);
+        visibleSurfaceIndicator.material.color = color;
+
+        visibleSurfaceIndicator.gameObject.SetActive(true);
+        visibleSurfaceIndicator.material = materials[1];
     }
 
     public void HideNavigationIndicator()
     {
-        walkableIndicatorSurface.gameObject.SetActive(false);
+        surfaceIndicator.gameObject.SetActive(false);
+        visibleSurfaceIndicator.gameObject.SetActive(false);
+
     }
 
     public float DistanceTo(Vector3 position)
