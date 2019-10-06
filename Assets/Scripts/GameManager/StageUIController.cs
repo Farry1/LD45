@@ -19,8 +19,8 @@ public class StageUIController : MonoBehaviour
     [Header("UI Buttons")]
     public Button playerMoveButton;
 
-
-
+    [Header("Ingame Menu")]
+    public GameObject InGameMenuContainer;
 
 
     private static StageUIController _instance;
@@ -48,7 +48,7 @@ public class StageUIController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        InGameMenu();
     }
 
     public void SetPlayerActionContainer(bool state)
@@ -86,6 +86,17 @@ public class StageUIController : MonoBehaviour
             GameObject actionButton = GameObject.Instantiate(actionButtonPrefab, playerActionsContainer.transform);
             actionButton.GetComponentInChildren<Text>().text = action.actionName;
             actionButton.GetComponentInChildren<Button>().onClick.AddListener(action.Execute);
+        }
+    }
+
+    bool toggleIngameMenu = false;
+    void InGameMenu()
+    {
+        InGameMenuContainer.SetActive(toggleIngameMenu);
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            toggleIngameMenu = !toggleIngameMenu;
         }
     }
 }

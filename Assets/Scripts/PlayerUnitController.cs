@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class PlayerUnitController : MonoBehaviour
 {
-    public List<Unit> units = new List<Unit>();
-    public Unit selectedPlayerUnit = null;
+    [HideInInspector] public List<Unit> units = new List<Unit>();
+    [HideInInspector] public Unit selectedPlayerUnit = null;
 
     private static PlayerUnitController _instance;
     public static PlayerUnitController Instance { get { return _instance; } }

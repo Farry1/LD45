@@ -119,7 +119,7 @@ public class Unit : MonoBehaviour, ISelectable
             currentPath = null;
             actionState = ActionState.None;
             StageUIController.Instance.playerMoveButton.interactable = true;
-            if (unitState == UnitState.Selected)
+            if (unitState == UnitState.Selected && actionPoints > 0)
                 TileMap.Instance.Dijkstra(currentNode, maxSteps);
         }
 
@@ -130,7 +130,9 @@ public class Unit : MonoBehaviour, ISelectable
     public void Move()
     {
         TileMap.Instance.Clear();
-        if (actionState != ActionState.Moving && currentPath != null)
+        if (actionState != ActionState.Moving &&
+            currentPath != null &&
+            actionPoints > 0)
         {
             actionState = ActionState.Moving;
             StartCoroutine(MoveCoroutine());
@@ -138,6 +140,8 @@ public class Unit : MonoBehaviour, ISelectable
             relatedUIPanel.transform.Find("TurnsText").GetComponent<Text>().text = actionPoints.ToString();
         }
     }
+
+
 
     IEnumerator MoveCoroutine()
     {
@@ -149,7 +153,9 @@ public class Unit : MonoBehaviour, ISelectable
 
     public void PrecalculatePathTo(Node target)
     {
-        if (unitState == UnitState.Selected && actionState == ActionState.MoveSelection)
+        if (unitState == UnitState.Selected &&
+            actionState == ActionState.MoveSelection &&
+            actionPoints > 0)
         {
             currentPath = TileMap.Instance.GeneratePathTo(currentNode, target, maxSteps);
         }
@@ -165,7 +171,8 @@ public class Unit : MonoBehaviour, ISelectable
             StageUIController.Instance.CreateActionMenu(actions);
             // StageUIController.Instance.playerMoveButton.interactable = !moveActionAvailable;
 
-            TileMap.Instance.Dijkstra(currentNode, maxSteps);
+            if (actionPoints > 0)
+                TileMap.Instance.Dijkstra(currentNode, maxSteps);
         }
     }
 
